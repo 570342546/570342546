@@ -9,10 +9,11 @@ var roleCarryer2 = {
         }else if(Math.ceil(Math.random()*10) == 8){
             creep.say('一直在搬来搬去~~',true);
         }
-        var s = 400000;
-        var usefactory = 1;
-        // var itemFrom = RESOURCE_UTRIUM,itemTo = RESOURCE_UTRIUM_BAR;
-        var itemFrom = RESOURCE_OXYGEN,itemTo = RESOURCE_OXIDANT;
+        var s = 800000;
+        var usefactory = 0;
+        // var itemFrom = RESOURCE_ZYNTHIUM,itemTo = RESOURCE_ZYNTHIUM_BAR;
+        var itemFrom = RESOURCE_UTRIUM,itemTo = RESOURCE_UTRIUM_BAR;
+        // var itemFrom = RESOURCE_OXYGEN,itemTo = RESOURCE_OXIDANT;
         var factory = Game.getObjectById('629149d6a48e452e909b0f05');
         if(usefactory == 1){
             if(factory.cooldown == 0 && factory.store[itemFrom] >= 500){
@@ -26,10 +27,10 @@ var roleCarryer2 = {
         var storage = creep.room.storage;
         var terminal = creep.room.terminal;
         if(terminal.store[RESOURCE_ENERGY] > 100000){
-            terminal.send(RESOURCE_ENERGY,90000,'E17S55')
+            terminal.send(RESOURCE_ENERGY,50000,'E17S54')
         }
         // Game.getObjectById('62864a761549707138cb318f').send(RESOURCE_ENERGY,80000,'E17S55')
-        var lab = Game.getObjectById('6295e9040a952e492de76cc5');
+        var lab = Game.getObjectById('62951d3d3ac85c1644121864');
         var creep_last = null,terminal_last = null,storage_last;
         for(const type in creep.store){
             creep_last = type;
@@ -40,14 +41,9 @@ var roleCarryer2 = {
         // for(const type in storage.store) {
         //     storage_last = type;
         // }
-        if(powerspawn.store[RESOURCE_GHODIUM] < 5000 && (terminal.store[RESOURCE_GHODIUM] > 0 || storage.store[RESOURCE_GHODIUM] > 0 || creep.store[RESOURCE_GHODIUM] > 0)){
-            if(creep.store.getUsedCapacity() == 0){
-                creep.withdraw(terminal,RESOURCE_GHODIUM);
-            }else if(creep.store[RESOURCE_GHODIUM] > 0){
-                creep.transfer(powerspawn,RESOURCE_GHODIUM);
-            }else{xs
-                creep.transfer(storage,creep_last);
-            }
+        creep.moveTo(7,40)
+        if(storage.store.getFreeCapacity() < 50000 && creep.store.getUsedCapacity() > 0){
+            creep.transfer(terminal,creep_last);
         }else
         // if(factory.store[RESOURCE_ENERGY] > 10000 && usefactory == 1){
         //     if(creep.store.getUsedCapacity() == 0){
@@ -97,7 +93,7 @@ var roleCarryer2 = {
                 }else{
                     creep.transfer(storage,creep_last);
                 }
-            }else if(powerspawn.store[RESOURCE_ENERGY] < 5000 && (storage.store[RESOURCE_ENERGY] > 0 || creep.store[RESOURCE_ENERGY] > 0)){
+            }else if(powerspawn.store[RESOURCE_ENERGY] < 4500 && (storage.store[RESOURCE_ENERGY] > 0 || creep.store[RESOURCE_ENERGY] > 0)){
                 if(creep.store.getUsedCapacity() == 0){
                     creep.withdraw(storage,RESOURCE_ENERGY);
                 }else if(creep.store[RESOURCE_ENERGY] > 0){
@@ -117,7 +113,7 @@ var roleCarryer2 = {
                         }else creep.transfer(storage,creep_last);
                     }
                 }else if(link.store[RESOURCE_ENERGY] == 0){
-                    if(factory.cooldown == 0 && usefactory == 1 && (storage.store[itemFrom] > 0 || terminal.store[itemFrom] > 0 || creep.store[itemFrom] > 0 || creep.store[itemTo] > 0 || factory.store[itemTo])){
+                    if(usefactory == 1 && (storage.store[itemFrom] > 0 || terminal.store[itemFrom] > 0 || creep.store[itemFrom] > 0 || creep.store[itemTo] > 0 || factory.store[itemTo])){
                         if(creep.store.getUsedCapacity() == 0){
                             if(storage.store[itemTo] > 0){
                                 creep.withdraw(storage,itemTo);

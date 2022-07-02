@@ -83,7 +83,7 @@ var roleBuilder = {
                     var storage = creep.room.storage;
                     var containers = creep.room.find(FIND_STRUCTURES, {filter: (i) => i.structureType == STRUCTURE_CONTAINER && i.store[RESOURCE_ENERGY] > 100});
                     var container = creep.pos.findClosestByPath(containers);
-                    if(container && creep.room.name != 'E17S57'){
+                    if(container && creep.room.name != 'E17S57' && creep.room.name != 'E17S55'){
                         if(creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                             creep.moveTo(container,{visualizePathStyle: {stroke: '#0000ff'}});
                         }

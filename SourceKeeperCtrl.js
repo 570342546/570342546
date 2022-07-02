@@ -66,7 +66,7 @@ function flagRun(flag){
             if(spawn.room.energyCapacityAvailable >= 550){
                 body = [WORK,WORK,WORK,WORK,WORK,MOVE]
             }
-            if(spawn.room.energyCapacityAvailable >= 700){
+            if(spawn.room.energyCapacityAvailable >= 700 && spawn.room.energyCapacityAvailable >= 1800){
                 body = [MOVE,MOVE,MOVE,CARRY,WORK,WORK,WORK,WORK,WORK]
             }
             // if(needToSaveCpu && spawn.room.energyCapacityAvailable >= 1300){

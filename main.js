@@ -16,9 +16,11 @@ var Draw = require('draw');
 var autMarket = require('autMarket');
 var SourceKeeperCtrl = require('SourceKeeperCtrl');
 var powercreep_大猫 = require('powercreep_大猫');
+var 伤害 = require('伤害');
 
 const white_lists = ['smallLEI','yaddrx2','1452411'];
 module.exports.loop = function () {
+    // 伤害.run('E19S54');
     // let center = Game.flags.center; // 房间中心的位置
     // let pa = Game.flags.pa;
     // let pb = Game.flags.pb;
@@ -34,7 +36,7 @@ module.exports.loop = function () {
     // var m = t.getMinutes();
     // var s = t.getSeconds();
     // var say ='时间:'+h+':'+m+':'+s;
-    // Draw.run();
+    // Draw.run('E18S55');
     var Home = Game.spawns['大猫的家'];
     if(Home.spawning != null){
         Home = Game.spawns['猫爬架'];
@@ -44,10 +46,13 @@ module.exports.loop = function () {
         home2 = Game.spawns['creep.store[RESOURCE_ENERGY] == 0'];
     }
     var home3 = Game.spawns['大猫的第三个家'];
+    if(home3.spawning != null){
+        home3 = Game.spawns['第三个猫爬架'];
+    }
     var home4 = Game.spawns['大猫的第四个家'];
     var home5 = Game.spawns['大猫的第五个家'];
     // labCtrl.run('E17S57',RESOURCE_UTRIUM_OXIDE,50)
-    ControllerProgress.run('E17S55');
+    ControllerProgress.run('W33S14');
     SourceKeeperCtrl.run();     
     
     
@@ -108,26 +113,27 @@ module.exports.loop = function () {
     var em4 = home5.room.energyCapacityAvailable;
     
     var attackers = _.filter(Game.creeps, (creep) => creep.memory.role == '近战爬');
-    if(attackers.length < 0){
+    if(attackers.length < 1){
         var newName = '近战爬'+Game.time;
-        home3.spawnCreep([TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], newName, {memory: {role: '近战爬'}});
+        home5.spawnCreep([ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], newName, {memory: {role: '近战爬'}});
     }
     
     var helpers = _.filter(Game.creeps, (creep) => creep.memory.role == '援建爬');
-    if(helpers.length < 1){
-        var newName = '援建爬'+Game.time;
-        home2.spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,ATTACK,HEAL,MOVE,MOVE,MOVE,MOVE,MOVE], newName,  {memory: {role: '援建爬'}});
-
-        Game.flags['Flag9'].setPosition(new RoomPosition(22,29, 'E16S56') )
+    if(helpers.length < 0){
+        var newName = '肉爬'+Game.time;
+        // home2.spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,ATTACK,HEAL,MOVE,CARRY,MOVE], newName,  {memory: {role: '援建爬'}});
+        home3.spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], newName,  {memory: {role: '援建爬'}});
+        
+        Game.flags['Flag9'].setPosition(new RoomPosition(28,47, 'E18S55') )
         
     }
     var helper2s = _.filter(Game.creeps, (creep) => creep.memory.role == '援建爬2');
     if(helper2s.length < 1){
         var newName = '援建爬2'+Game.time;
         // home2.spawnCreep([ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,MOVE,ATTACK,ATTACK,ATTACK,HEAL,MOVE,MOVE,MOVE,MOVE,CARRY,MOVE], newName,  {memory: {role: '援建爬2'}});
-        home2.spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,ATTACK,HEAL,MOVE,MOVE,MOVE,MOVE,MOVE], newName,  {memory: {role: '援建爬2'}});
+        home2.spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,ATTACK,HEAL,MOVE,CARRY,MOVE], newName,  {memory: {role: '援建爬2'}});
 
-        Game.flags['Flag10'].setPosition(new RoomPosition(22,29, 'E16S56') )
+        Game.flags['Flag10'].setPosition(new RoomPosition(32,25, 'E16S56') )
         
     }
         
@@ -148,6 +154,8 @@ module.exports.loop = function () {
     
     var tower8 = Game.getObjectById('62a694c779055835011d2c15');
     var tower9 = Game.getObjectById('62abf8f1fd992a0dced2ae8c');
+    
+    var tower10 = Game.getObjectById('62bb35516c6a8166a100e209');
     if(tower1) {
         // var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
         //     filter: (structure) => structure.hits < structure.hitsMax
@@ -268,6 +276,22 @@ module.exports.loop = function () {
             tower9.attack(closestHostile);
         }
     }
+    if(tower10) {        // var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+        //     filter: (structure) => structure.hits < structure.hitsMax
+        // });
+        // if(closestDamagedStructure) {
+        //     tower.repair(closestDamagedStructure);
+        // }
+        var closestHostile = tower10.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        if(closestHostile && white_lists.indexOf(closestHostile.owner.username) == -1) {
+            tower10.attack(closestHostile);
+        }else{
+            var healcreep = tower10.pos.findClosestByRange(FIND_MY_CREEPS,{filter: s => s.hits < s.hitsMax});
+            if(healcreep){
+                tower10.heal(healcreep);
+            }
+        }
+    }
 
     var f = 0;
     for(var name in Memory.creeps) {
@@ -313,12 +337,19 @@ module.exports.loop = function () {
         link2 = Game.getObjectById('629f8f5a13ee0bb5a5c6dff6');
         link1.transferEnergy(link2);
     }
-
-    if(harvesters_room5.length < 2) {
+    link1 =Game.getObjectById('62bd5c8d8b83201a0dbef8ce');
+    if(link1.store.getFreeCapacity(RESOURCE_ENERGY) == 0 && link1.cooldown == 0){
+        link2 = Game.getObjectById('62bd72a646a1a51b875571d0');
+        link1.transferEnergy(link2);
+    }
+    
+    if(harvesters_room5.length < 1) {
         console.log('第5房需要运输爬');
         var newName = '运输爬' + Game.time;
-        // if(e3 < 600){
-        home5.spawnCreep([CARRY,CARRY,CARRY,MOVE,WORK,WORK,MOVE,MOVE], newName, {memory: {role: '运输爬5'}});
+        if(e4 < 450){
+            home5.spawnCreep([CARRY,MOVE], newName, {memory: {role: '运输爬5'}});
+        }else home5.spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], newName, {memory: {role: '运输爬5'}});
+        
         // }else home4.spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], newName, {memory: {role: '运输爬5'}});
     }else if(harvesterUs_room5.length < 0 && Game.getObjectById('5bbcb1c040062e4259e932c1').mineralAmount > 0){
         var newName = '采矿'+Game.time;
@@ -326,18 +357,18 @@ module.exports.loop = function () {
     }else if(builders_room5.length < 1){
         console.log('第5个房需要建造爬');
         var newName = '建造爬' + Game.time;
-        home5.spawnCreep([CARRY,CARRY,WORK,WORK,MOVE,MOVE], newName, {memory: {role: '建造爬5'}});
+        home5.spawnCreep([CARRY,CARRY,CARRY,CARRY,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE], newName, {memory: {role: '建造爬5'}});
     }else if(repairers_room5.length < 1) {
         console.log('第5个房需要维护爬');
         var newName = '维护爬' + Game.time;
-        home5.spawnCreep([CARRY,WORK,MOVE], newName, {memory: {role: '维护爬5'}});
-    }else if(upgraders_room5.length < 3) {
+        home5.spawnCreep([CARRY,WORK,MOVE,CARRY,WORK,MOVE], newName, {memory: {role: '维护爬5'}});
+    }else if(upgraders_room5.length < 1) {
         console.log('第5个房需要升级爬');
         var newName = '升级爬' + Game.time;
-        home5.spawnCreep([CARRY,CARRY,CARRY,MOVE,WORK,WORK,MOVE,MOVE], newName, {memory: {role: '升级爬5'}});
-    }else if(workers_room5.length < 0){
+        home5.spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], newName, {memory: {role: '升级爬5'}});
+    }else if(workers_room5.length < 1){
         var newName = '工作爬'+Game.time;
-        home5.spawnCreep([CARRY,MOVE], newName, {memory: {role: '拆解爬5'}});
+        home5.spawnCreep([CARRY,CARRY,MOVE], newName, {memory: {role: '拆解爬5'}});
     }
     
 
@@ -376,18 +407,18 @@ module.exports.loop = function () {
     }else if(harvesterUs_room3.length < 1 && Game.getObjectById('5bbcb36f40062e4259e943c6').mineralAmount > 0){
         var newName = '采矿'+Game.time;
         home3.spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], newName, {memory: {role: '采矿3'}});
-    }else if(builders_room3.length < 4){
+    }else if(builders_room3.length < 0){
         console.log('第三个房需要建造爬');
         var newName = '建造爬' + Game.time;
-        home3.spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,MOVE], newName, {memory: {role: '建造爬3'}});
-    }else if(repairers_room3.length < 1) {
+        home3.spawnCreep([WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], newName, {memory: {role: '建造爬3'}});
+    }else if(repairers_room3.length < 2) {
         console.log('第三个房需要维护爬');
         var newName = '维护爬' + Game.time;
-        home3.spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], newName, {memory: {role: '维护爬3'}});
-    }else if(upgraders_room3.length < 0) {
+        home3.spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,MOVE], newName, {memory: {role: '维护爬3'}});
+    }else if(upgraders_room3.length < 1 && Game.rooms['E17S55'].controller.ticksToDowngrade < 60000) {
         console.log('第三个房需要升级爬');
         var newName = '升级爬' + Game.time;
-        home3.spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], newName, {memory: {role: '升级爬3'}});
+        home3.spawnCreep([CARRY,WORK,MOVE], newName, {memory: {role: '升级爬3'}});
     }else if(workers_room3.length < 1){
         var newName = '工作爬'+Game.time;
         home3.spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE], newName, {memory: {role: '拆解爬3'}});
@@ -397,8 +428,8 @@ module.exports.loop = function () {
     if(harvesters_room2.length < 1) {
         console.log('第二个房需要运输爬');
         var newName = '运输爬' + Game.time;
-        if(e1 >= 450){
-            home2.spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], newName, {memory: {role: '运输爬2'}});
+        if(e1 >= 600){
+            home2.spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], newName, {memory: {role: '运输爬2'}});
         }else{
             home2.spawnCreep([CARRY,CARRY,MOVE], newName, {memory: {role: '运输爬2'}});
         }
@@ -442,14 +473,13 @@ module.exports.loop = function () {
         if(builders.length < 0) {
             var newName = '建造爬'+Game.time;
             Home.spawnCreep([WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], newName, {memory: {role: '建造爬'}});
-        }else if(repairers.length < 1){
+        }else if(repairers.length < 2){
             var newName = '维护爬'+Game.time;
-            Home.spawnCreep([CARRY,CARRY,CARRY,CARRY,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE], newName, {memory: {role: '维护爬'}});
-            // Home.spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,MOVE], newName, {memory: {role: '维护爬'}});
+            Home.spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,MOVE], newName, {memory: {role: '维护爬'}});
         }else if(carryer.length < 1){
-            var newName = 'carryer'+Game.time;
+            var newName = '工具猫';
             Game.spawns['猫爬架'].spawnCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE], newName, {memory: {role: 'carryer'}});
-        }else if(upgraders.length < 1 && Game.rooms['E17S57'].controller.ticksToDowngrade < 10000) {
+        }else if(upgraders.length < 1 && Game.rooms['E17S57'].controller.ticksToDowngrade < 60000) {
             var newName = '升级爬'+Game.time;
             console.log('需要升级爬:200');
             Home.spawnCreep([WORK,CARRY,MOVE], newName,  {memory: {role: '升级爬'}});
@@ -476,16 +506,17 @@ module.exports.loop = function () {
         
     var countcreep = 0,h = 0,u = 0, b = 0,r = 0,d = 0,a=0,c = 0,cpucount = 0;
     for(var name in Game.creeps) {
-        // const startCpu = Game.cpu.getUsed();
         var creep = Game.creeps[name];
+        var body_length = creep.body.length;
         if(f == 1){
             creep.say('又一个兄弟没了呜呜~',true);
             f = 0;
         }
+        // const startCpu = Game.cpu.getUsed();
         if(creep.ticksToLive <= 150){
             creep.memory.live = false;
         }
-        if(creep.ticksToLive >= 1450){
+        if(creep.ticksToLive >= 1500-(600/body_length)){
             creep.memory.live = true;
         }
         if(creep.memory.role != null){
@@ -515,7 +546,7 @@ module.exports.loop = function () {
                 }else if(creep.memory.role == '维护爬' || creep.memory.role == '维护爬2' || creep.memory.role == '维护爬3' || creep.memory.role == '维护爬4' || creep.memory.role == '维护爬5') {
                     roleRepairer.run(creep);
                     r++;
-                }else if(creep.memory.role =='拆解爬' || creep.memory.role == '拆解爬3' || creep.memory.role == '拆解爬4'){
+                }else if(creep.memory.role =='拆解爬' || creep.memory.role == '拆解爬3' || creep.memory.role == '拆解爬4' || creep.memory.role == '拆解爬5'){
                     roleWorker.run(creep);
                     d++;
                 }else if(creep.memory.role =='搬运爬'){
@@ -539,14 +570,18 @@ module.exports.loop = function () {
                 }
             }
         }
-        countcreep++;
-            
         // const elapsed = Game.cpu.getUsed() - startCpu;
         // cpucount = cpucount + elapsed;
-        // console.log('('+name+')用了'+elapsed+' CPU time');
+        // if(elapsed > 1){
+        //     console.log('爬('+name+')用了'+elapsed+' CPU time [房间,位置]',creep.pos);
+        // }else console.log('爬('+name+')用了'+elapsed+' CPU time');
+        countcreep++;
+            
     }
-    console.log('主房间当前能量:',e,'/',em,'   分房间1当前能量:',e1,'/',em1,'   分房间2当前能量:',e2,'/',em2,'   分房间3当前能量:',e3,'/',em3,'   分房间4当前能量:',e4,'/',em4,'   爬总数:',countcreep);
-    console.log('a:',a,'  c:',c,'  h:',h,'  u:',u,'  b:',b,'  r:',r,'  d:',d,'  other:',countcreep-a-c-h-u-b-r-d-4);
-    console.log();
+    if(Game.time % 5 == 0){
+        console.log('主房间当前能量:',e,'/',em,'   分房间1当前能量:',e1,'/',em1,'   分房间2当前能量:',e2,'/',em2,'   分房间3当前能量:',e3,'/',em3,'   分房间4当前能量:',e4,'/',em4,'   爬总数:',countcreep);
+        console.log('a:',a,'  c:',c,'  h:',h,'  u:',u,'  b:',b,'  r:',r,'  d:',d,'  other:',countcreep-a-c-h-u-b-r-d-4);
+    }
+        console.log();
     // autMarket.run();
 }

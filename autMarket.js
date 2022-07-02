@@ -1,14 +1,14 @@
 module.exports = {
     run:function(){
         var terminal = Game.getObjectById('62864a761549707138cb318f');
-        var m = 1;
+        var m = 3;
         var amount = 500;
         if(m == 1){
             if(terminal.store[RESOURCE_ENERGY] > 10000 && terminal.cooldown == 0){
                 var orders = Game.market.getAllOrders(order => order.resourceType == RESOURCE_ENERGY && 
                     order.type == ORDER_BUY && order.price >= 4 &&
                         Game.market.calcTransactionCost(amount, 'E17S57', order.roomName) < terminal.store[RESOURCE_ENERGY]);
-                if(order && orders.length > 0){
+                if(orders && orders.length > 0){
                     var id = orders[0].id;
                     var price = orders[0].price;
                     for(var order of orders){
@@ -24,11 +24,11 @@ module.exports = {
                 console.log('E交易成功,订单id:',id,' 单价:',price,'  获得了:',price*amount,'cr');
             }
         }else if(m == 2){
-            if(terminal.store[RESOURCE_UTRIUM] > 10000 && terminal.cooldown == 0){
+            if(terminal.store[RESOURCE_UTRIUM] > 5000 && terminal.cooldown == 0){
                 var orders = Game.market.getAllOrders(order => order.resourceType == RESOURCE_UTRIUM && 
                     order.type == ORDER_BUY && order.price >= 0.8 &&
                         Game.market.calcTransactionCost(amount, 'E17S57', order.roomName) < terminal.store[RESOURCE_ENERGY]);
-                if(order && orders.length > 0){
+                if(orders && orders.length > 0){
                     var id = orders[0].id;
                     var price = orders[0].price;
                     for(var order of orders){
@@ -44,11 +44,11 @@ module.exports = {
                 console.log('U交易成功,订单id:',id,' 单价:',price,'  获得了:',price*amount,'cr');
             }
         }else if(m == 3){
-            if(terminal.store[RESOURCE_UTRIUM_BAR] > 500 && terminal.cooldown == 0){
-                var orders = Game.market.getAllOrders(order => order.resourceType == RESOURCE_UTRIUM_BAR && 
-                    order.type == ORDER_BUY && order.price >= 0.8 &&
+            if(terminal.store[RESOURCE_OXIDANT] > amount && terminal.cooldown == 0){
+                var orders = Game.market.getAllOrders(order => order.resourceType == RESOURCE_OXIDANT && 
+                    order.type == ORDER_BUY && order.price >= 27 &&
                         Game.market.calcTransactionCost(amount, 'E17S57', order.roomName) < terminal.store[RESOURCE_ENERGY]);
-                if(order && orders.length > 0){
+                if(orders && orders.length > 0){
                     var id = orders[0].id;
                     var price = orders[0].price;
                     for(var order of orders){
@@ -60,8 +60,8 @@ module.exports = {
                         }
                     }
                     Game.market.deal(id,amount,"E17S57");
+                    console.log('压缩O 交易成功,订单id:',id,' 单价:',price,'  获得了:',price*amount,'cr');
                 }
-                console.log('UBAR交易成功,订单id:',id,' 单价:',price,'  获得了:',price*amount,'cr');
             }
         }else if(m = 4){
             if(terminal.cooldown == 0){

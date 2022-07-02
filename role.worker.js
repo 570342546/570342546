@@ -12,25 +12,52 @@ var roleWorker = {
         for(const type in storage.store){
             storage_last = type;
         }
+        if(terminal){
         for(const type in terminal.store){
             if(terminal.cooldown > 0) break; 
-            if(type != RESOURCE_ENERGY){
+            if(type != RESOURCE_ENERGY && type != RESOURCE_GHODIUM){
                 terminal.send(type,terminal.store.getUsedCapacity(type), 'E17S57')
                 break;
             }
-        }
-        if(creep.room.name == 'E17S54'){
-            if(terminal.store[RESOURCE_ENERGY] > 20000){
-                terminal.send(RESOURCE_ENERGY,15000, 'E17S55')
-            }
-            creep.moveTo(32,44);
-            if(creep.store.getUsedCapacity() == 0 && storage.store.getUsedCapacity(RESOURCE_ENERGY) > 50000){
-                creep.withdraw(storage,storage_last);
+        }}
+        if(creep.room.name == 'W33S14'){
+            creep.moveTo(12,9)
+            var link = Game.getObjectById('62bd72a646a1a51b875571d0');
+            if(creep.store.getUsedCapacity() == 0){
+                creep.withdraw(link,RESOURCE_ENERGY)
             }else{
-                creep.transfer(terminal,creep_last);
+                creep.transfer(storage,RESOURCE_ENERGY);
+            }
+        }else
+        if(creep.room.name == 'E17S54'){
+            // if(terminal.store[RESOURCE_ENERGY] > 20000){
+            //     terminal.send(RESOURCE_ENERGY,15000, 'E17S55')
+            // }
+            creep.moveTo(32,44);
+            if(creep.store.getUsedCapacity() == 0){
+                if(terminal.store[RESOURCE_ENERGY] > 50000){
+                    creep.withdraw(terminal,RESOURCE_ENERGY)
+                }else if(storage_last != RESOURCE_ENERGY){
+                    creep.withdraw(storage,storage_last)
+                }
+            }else{
+                if(creep_last == RESOURCE_ENERGY){
+                    creep.transfer(storage,creep_last);
+                }else creep.transfer(terminal,creep_last);
             }
         }else
         if(creep.room.name == 'E17S55'){
+            var nuker = Game.getObjectById('62bbba3af5636708cae0f3a7')
+            if(nuker.store[RESOURCE_GHODIUM] <0){
+                if(creep.store.getUsedCapacity() == 0){
+                    creep.withdraw(terminal,RESOURCE_GHODIUM);
+                }else if(creep.store[RESOURCE_GHODIUM] > 0){
+                    creep.transfer(nuker,RESOURCE_GHODIUM);
+                }else{
+                    creep.transfer(storage,creep_last)
+                }
+            }else{
+            var link = Game.getObjectById('629f8f5a13ee0bb5a5c6dff6');
             creep.moveTo(11,23);
             if(storage.store.getFreeCapacity() < 100000 && terminal.store.getFreeCapacity() > 10000){
                 if(creep.store.getFreeCapacity() == 0){
@@ -39,8 +66,18 @@ var roleWorker = {
                     creep.withdraw(storage,RESOURCE_ENERGY);
                 }
             }else
+            if(storage.store[RESOURCE_ENERGY] < 5000){
+                if(creep.store.getFreeCapacity() == 0){
+                    creep.transfer(storage,creep_last);
+                }else{
+                    if(terminal.store[RESOURCE_ENERGY] > 0){
+                        creep.withdraw(terminal,RESOURCE_ENERGY);
+                    }else{
+                         creep.withdraw(link,RESOURCE_ENERGY);
+                    }
+                }
+            }else
             if(creep.store.getUsedCapacity() == 0){
-                var link = Game.getObjectById('629f8f5a13ee0bb5a5c6dff6');
                 if(link.store[RESOURCE_ENERGY] > 300){
                     creep.withdraw(link,RESOURCE_ENERGY);
                 }else if(terminal.store[RESOURCE_ENERGY] > 50000){
@@ -55,70 +92,39 @@ var roleWorker = {
                     creep.transfer(storage,creep_last);
                 }
             }
+            }
         }else if(creep.room.name == 'E17S56'){
-            if(terminal.store[RESOURCE_ENERGY] > 50000){
-                terminal.send(RESOURCE_ENERGY,45000, 'E17S55')
-            }
+            // if(terminal.store[RESOURCE_ENERGY] > 50000){
+            //     terminal.send(RESOURCE_ENERGY,45000, 'E17S55')
+            // }
             var link = Game.getObjectById('628e59edd7adcc470d945f20');
-            var creep_last = null,b = null,terminal_last;
-            for(const type in creep.store){
-                if(type) creep_last = type;
-            }
-            for(const type in storage.store){
-                if(type != RESOURCE_ENERGY) b = type;
-            }
-            if(storage.store.getUsedCapacity() > 50000){
-                creep.moveTo(14,17);
-                if(creep.store.getUsedCapacity() == 0){
-                    if(link.store[RESOURCE_ENERGY] > 50){
-                        creep.withdraw(link,RESOURCE_ENERGY);
-                    }else{
-                        creep.withdraw(storage,RESOURCE_ENERGY)
-                    }
-                }else{
-                    creep.transfer(terminal,creep_last);
-                }
-            }else
-            if(link.store[RESOURCE_ENERGY] > 50){
-                if(creep.store.getUsedCapacity() == 0){
+            var container = Game.getObjectById('629aaca6dccb2fa9238c4bd7')
+            if(creep.store.getUsedCapacity() == 0){
+                if(link.store[RESOURCE_ENERGY] > 50){
                     if(creep.withdraw(link,RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
-                        creep.moveTo(link);
+                        creep.moveTo(14,17);
                     }
-                }else if(creep.transfer(storage,creep_last) == ERR_NOT_IN_RANGE){
-                        creep.moveTo(storage);
+                }else if(container.store[RESOURCE_ENERGY] > 100){
+                    if(creep.withdraw(container,RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
+                        creep.moveTo(container);
+                    }
+                }else if(storage_last != RESOURCE_ENERGY || storage.store[RESOURCE_ENERGY] > 900000){
+                    if(creep.withdraw(storage,storage_last) == ERR_NOT_IN_RANGE){
+                        creep.moveTo(14,17);
+                    }
+                }else if(terminal.store[RESOURCE_ENERGY] > 200000){
+                    if(creep.withdraw(storage,storage_last) == ERR_NOT_IN_RANGE){
+                        creep.moveTo(14,17);
+                    }
                 }
             }else{
-            // if(terminal.store[RESOURCE_ENERGY] > 10000){
-            //     if(creep.store.getUsedCapacity() == 0){
-            //         if(creep.withdraw(terminal,RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
-            //             creep.moveTo(terminal);
-            //         }
-            //     }else{
-            //         if(creep.transfer(storage,creep_last) == ERR_NOT_IN_RANGE){
-            //             creep.moveTo(storage);
-            //         }
-            //     }
-            // }else{
-                if(creep.store.getUsedCapacity() == 0){
-                    var container = Game.getObjectById('629aaca6dccb2fa9238c4bd7');
-                    if(container.store.getUsedCapacity() > 100){
-                        if(creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
-                            creep.moveTo(container);
-                        }
-                    }else if(b != null){
-                        if(creep.withdraw(storage,b) == ERR_NOT_IN_RANGE){
-                            creep.moveTo(storage);
-                        }
+                if(storage.store.getFreeCapacity() > 100000){
+                    if(creep.transfer(storage,creep_last) == ERR_NOT_IN_RANGE){
+                        creep.moveTo(14,17);
                     }
                 }else{
-                    if(creep_last != RESOURCE_ENERGY){
-                        if(creep.transfer(terminal, creep_last) == ERR_NOT_IN_RANGE){
-                            creep.moveTo(terminal);
-                        }
-                    }else{
-                        if(creep.transfer(storage, creep_last) == ERR_NOT_IN_RANGE){
-                            creep.moveTo(storage);
-                        }
+                    if(creep.transfer(terminal,creep_last) == ERR_NOT_IN_RANGE){
+                        creep.moveTo(14,17);
                     }
                 }
             }

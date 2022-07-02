@@ -2,17 +2,15 @@ var roleAttacker = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-        if(creep.room.name != 'E18S55'){
-            creep.moveTo(new RoomPosition(24,16, 'E18S55'));
+        if(creep.room.name != 'W35S13'){
+            creep.moveTo(new RoomPosition(45,48, 'W35S13'));
         }else{
-            var c = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-            if(c && c.owner.username != 'yaddrx2') {
-                creep.say('有其他的爬入侵!',true)
-                creep.attack(c);
-                creep.moveTo(c,{visualizePathStyle: {stroke: '#ff0000'}});
+            var npc = creep.room.find(FIND_HOSTILE_STRUCTURES,{filter: i => i.owner.username == 'Invader'})[0]
+            if(npc){
+                creep.attack(npc);
+                creep.moveTo(npc);
             }else{
-                creep.say('打盹中....',true)
-                creep.moveTo(24,16,{visualizePathStyle: {stroke: '#0000ff'}});
+                creep.moveTo(8,10);
             }
         }
     }

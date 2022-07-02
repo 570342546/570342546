@@ -10,7 +10,7 @@ var roleHelper2 = {
         var f = Game.flags['Flag10'];
         var help = false;
         if(n == 'W33S14') help = true;
-        console.log(creep,'(',creep.ticksToLive,'):',creep.pos,'->',f.pos,creep.memory.h,help);
+        console.log(creep,'(',creep.ticksToLive,'):',creep.pos,'->',f.pos,creep.memory.building,help);
         if(help){
             var c = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
             if(c && c.owner.username != 'yaddrx2') {
@@ -27,17 +27,18 @@ var roleHelper2 = {
     	        creep.say('🚧 建造/升级',true);
     	    }
             if(creep.memory.building) {
-    	        var target = creep.room.find(FIND_CONSTRUCTION_SITES)[0];
+                var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
+                var target = creep.pos.findClosestByPath(targets);
                 if(target) {
                     if(creep.build(target) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(target,{visualizePathStyle: {stroke: '#0000ff'}});
+                        creep.moveTo(target);
                     }
                 }else if(creep.upgradeController(c) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(c);
                 }
 	        }else{
 	            const droped = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
-                if(droped && droped.amount > 100) {
+                if(droped && droped.amount >= 100) {
                     if(creep.pickup(droped) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(droped,{visualizePathStyle: {stroke: '#ffffff'}});
                     }
@@ -54,17 +55,25 @@ var roleHelper2 = {
                                 creep.moveTo(ruin,{visualizePathStyle: {stroke: '#ffffff'}});
                             }
                         }else{
-                            // let container = creep.pos.findClosestByPath(FIND_STRUCTURES,{filter: (i) => i.structureType == STRUCTURE_CONTAINER && i.store[RESOURCE_ENERGY] > creep.store.getCapacity()-100 && i.store[RESOURCE_ENERGY] > 50});
-                            // if(container && container.pos.x != 19){
-                            //     if(creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                            //         creep.moveTo(container,{visualizePathStyle: {stroke: '#ffffff'}});
-                            //     }
-                            // }else{
-                                var source = Game.getObjectById('5bbcab2b9099fc012e63303a')
-                                if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                                    creep.moveTo(source);
+                            let container = creep.pos.findClosestByPath(FIND_STRUCTURES,{filter: (i) => i.structureType == STRUCTURE_CONTAINER && i.store[RESOURCE_ENERGY] > creep.store.getCapacity()-100 && i.store[RESOURCE_ENERGY] > 50});
+                            if(container && container.pos.x != 19){
+                                if(creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                                    creep.moveTo(container);
                                 }
-                            // }
+                            }else{
+                                var storage = creep.room.storage;
+                                if(storage.store[RESOURCE_ENERGY] > 5000){
+                                    if(creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                                        creep.moveTo(storage);
+                                    }
+                                }else{
+                                    var sources = creep.room.find(FIND_SOURCES_ACTIVE);
+                                    var source = creep.pos.findClosestByPath(sources);
+                                    if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                                        creep.moveTo(source);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -75,9 +84,9 @@ var roleHelper2 = {
                     creep.moveTo(f);
                 }else{
                     if(n == 'E16S56'){
-                        f.setPosition(new RoomPosition(26,23, 'E15S56'));
-                    }else if(n == 'E15S56'){
-                        f.setPosition(new RoomPosition(20,38, 'E15S55'));
+                        f.setPosition(new RoomPosition(16,2, 'E16S55'));
+                    }else if(n == 'E16S55'){
+                        f.setPosition(new RoomPosition(20,36, 'E15S55'));
                     }else if(n == 'E15S55'){
                         f.setPosition(new RoomPosition(30,3, 'W35S15'));
                     }else if(n == 'W35S15'){
