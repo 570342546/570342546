@@ -32,7 +32,7 @@ const STATE_FILL = 0
 const STATE_REACTION = 1
 const STATE_RECOVERY = 2
 
-const body = [CARRY,CARRY,MOVE,CARRY,CARRY,MOVE];
+const body = [CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE];
 //lab专用creep的身体部件，如果嫌多，或者嫌少，自行调整
 
 
@@ -156,6 +156,7 @@ module.exports = {
             }
         }
         
+           
 
     }
 };

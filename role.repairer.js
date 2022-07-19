@@ -30,8 +30,7 @@ var roleRepairer = {
                 }
             }else{
     			var broken = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-    			    filter: structure => structure.hits < structure.hitsMax 
-    			 //   && structure.hits < 5000
+    			    filter: structure => structure.hits < structure.hitsMax-1000
     			    && structure.structureType != STRUCTURE_WALL 
     			    && structure.structureType != STRUCTURE_RAMPART
     			});
@@ -43,61 +42,62 @@ var roleRepairer = {
     					creep.moveTo(broken,{visualizePathStyle: {stroke: color}});
     				}
     			}else{
-            			var wall = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            			    filter: w => w.hits < 1000000
-            			    && w.structureType == STRUCTURE_WALL
-            			    && w.pos.y != 40
-            			});
-            			if(wall && creep.room.name != 'E17S57'){
+    			      var wall;
+    			      if(creep.room.name == 'E17S57'){
+    			          wall = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                			    filter: w => w.hits < 3000000
+                			    && w.structureType == STRUCTURE_WALL
+                			    && w.pos.y <= 28
+                			});
+    			      }else{
+    			          wall = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                			    filter: w => w.hits < 2000000
+                			    && w.structureType == STRUCTURE_WALL
+                			});
+    			      }
+            			if(wall){
+            			    if(wall == Game.getObjectById('62d2b8022fbd1965d7632dd8')){
+            			        if(creep.repair(wall) == ERR_NOT_IN_RANGE) {
+                					creep.moveTo(16,19);
+                				}
+            			    }else
             			    if(creep.repair(wall) == ERR_NOT_IN_RANGE) {
-        					    creep.moveTo(wall,{visualizePathStyle: {stroke: color}});
+            			        creep.moveTo(wall,{visualizePathStyle: {stroke: color}});
         				    }
             			}else{
-            			 //   var targets = creep.room.find(FIND_STRUCTURES, {
-                //                     filter: (structure) => {
-                //                         return (structure.structureType == STRUCTURE_EXTENSION ||
-                //                                 (structure.structureType == STRUCTURE_SPAWN && structure.store[RESOURCE_ENERGY] <= 200) ||
-                //                                 structure.structureType == STRUCTURE_LAB ||
-                //                                 structure.structureType == STRUCTURE_NUKER ||
-                //                                 structure.structureType == STRUCTURE_TOWER) && 
-                //                                 structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
-                //                     }
-                //             });
-                //             if(targets.length > 0) {
-                //                 var l = creep.pos.findClosestByPath(targets);
-                //                 if(creep.transfer(l, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                //                     creep.moveTo(l,{visualizePathStyle: {stroke: '#ffff00'}});
-                //                 }
-                //             }else {
-                			    var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
-                    	        var target = creep.pos.findClosestByPath(targets);
-                                if(target) {
-                                    // creep.build(target)
-                                    if(creep.build(target) == ERR_NOT_IN_RANGE) {
-                                        creep.moveTo(target,{visualizePathStyle: {stroke: '#0000ff'}});
-                                    }
-                                }else{
-                                    var rampart = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                        			    filter: r => r.hits < 10002000
-                        			    && r.structureType == STRUCTURE_RAMPART
-                        			});
-                        			if(rampart){
-                        			    if(creep.repair(rampart) == ERR_NOT_IN_RANGE) {
-                        					creep.moveTo(rampart,{visualizePathStyle: {stroke: color}});
-                        				}
-                        			}else{
-                    			    if(creep.room.name != 'E17S57' && creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                                        if(creep.room.name == 'E17S55'){
-                                            creep.moveTo(16,19);
-                                        }else if(creep.room.name == 'E17S54'){
-                                            creep.moveTo(33,43);
-                                        }else creep.moveTo(creep.room.controller);
-                                    }
-                    			    if(Math.ceil(Math.random()*10) == 1){
-                                        creep.say('没啥可修,升级去喽.',true);
-                                    }
+            			    var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
+                	        var target = creep.pos.findClosestByPath(targets);
+                            if(target) {
+                                // creep.build(target)
+                                if(creep.build(target) == ERR_NOT_IN_RANGE) {
+                                    creep.moveTo(target,{visualizePathStyle: {stroke: '#0000ff'}});
                                 }
-                            // }
+                            }else{
+                                var rampart = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    			    filter: r => r.hits < 11000000
+                    			    && r.structureType == STRUCTURE_RAMPART
+                    			});
+                    			if(rampart){
+                    			    if(rampart == Game.getObjectById('62d2b66330b48b0005de376f')){
+                    			        if(creep.repair(rampart) == ERR_NOT_IN_RANGE) {
+                        					creep.moveTo(16,19);
+                        				}
+                    			    }else
+                    			    if(creep.repair(rampart) == ERR_NOT_IN_RANGE) {
+                    					creep.moveTo(rampart,{visualizePathStyle: {stroke: color},ignoreCreeps:false});
+                    				}
+                    			}else{
+                			    if(creep.room.name != 'E17S57' && creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                                    if(creep.room.name == 'E17S55'){
+                                        creep.moveTo(16,19);
+                                    }else if(creep.room.name == 'E17S54'){
+                                        creep.moveTo(33,43);
+                                    }else creep.moveTo(creep.room.controller);
+                                }
+                			    if(Math.ceil(Math.random()*10) == 1){
+                                    creep.say('没啥可修,升级去喽.',true);
+                                }
+                            }
             			}
         			}
     			}
@@ -137,7 +137,7 @@ var roleRepairer = {
                             }else{
                                 if(storage){
                                     if(creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                                        creep.moveTo(storage);
+                                        creep.moveTo(storage,{ignoreCreeps:false});
                                     }
                                 }
                             }

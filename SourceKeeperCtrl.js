@@ -29,7 +29,7 @@ module.exports.loop = function () {
 
 const needContainer = true;
 const needToSaveCpu = true;//可以生产10WORK的creep快速挖矿，然后休息，用能量换CPU的方法
-const usdCreepMove_Yuan = false;//如果你使用了Yuandiaodiaodiao所写的对穿，那么可以把这个设置为true，要不然新老creep交替会鬼畜
+const usdCreepMove_Yuan = true;//如果你使用了Yuandiaodiaodiao所写的对穿，那么可以把这个设置为true，要不然新老creep交替会鬼畜
 
 function flagRun(flag){
     const creep0 = Game.creeps[flag.name + '_0']
@@ -81,10 +81,13 @@ function flagRun(flag){
 module.exports = {
     run:function(){
         for(var flagName in Game.flags){
+            // const startCpu = Game.cpu.getUsed();
             var flag = Game.flags[flagName]
             if(flag.color == COLOR_YELLOW && flag.secondaryColor == COLOR_YELLOW){
                 flagRun(flag)
             }
+            // const elapsed = Game.cpu.getUsed() - startCpu;
+            // console.log(flag.pos,':',elapsed+' CPU time');
         }
     }
 };
@@ -102,16 +105,18 @@ function getAvaliableSpawn(roomName){
 //这部分主要负责控制creep
 function SourceKeeper (creep,flag){
     //container不存在就建一个
-    var container = Game.getObjectById(flag.memory.container);
-    if(needContainer){
-        if(!container){
-            container = flag.pos.lookFor(LOOK_STRUCTURES).find(o =>(o.structureType == STRUCTURE_CONTAINER))
+    if(creep.room.name != 'E17S56'){
+        var container = Game.getObjectById(flag.memory.container);
+        if(needContainer){
             if(!container){
-                flag.pos.createConstructionSite(STRUCTURE_CONTAINER)
-            }else{
-                flag.memory.container = container.id;
+                container = flag.pos.lookFor(LOOK_STRUCTURES).find(o =>(o.structureType == STRUCTURE_CONTAINER))
+                if(!container){
+                    flag.pos.createConstructionSite(STRUCTURE_CONTAINER)
+                }else{
+                    flag.memory.container = container.id;
+                }
+            }else {
             }
-        }else {
         }
     }
     //移动到旗子

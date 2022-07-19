@@ -1,6 +1,6 @@
 module.exports = {
-    run:function(room){
-        const roomName = room;
+    run:function(){
+        const roomName = "W33S14";
         const terrain = new Room.Terrain(roomName);
         const costs = new PathFinder.CostMatrix;
         const visual = new RoomVisual(roomName);
